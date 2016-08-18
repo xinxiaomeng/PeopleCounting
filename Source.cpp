@@ -11,9 +11,9 @@
 using namespace std;
 using namespace cv;
 
-static const bool IS_DEBUG = false;				//³]©w¬O§_Åã¥ÜDebug°T®§
-static const int DIFFERENT_IMAGE_THRESHOLD = 5;	//«e´ºªºThreshold
-static const int BINARIZED_THRESHOLD = 20;		//¤Gª½¤ÆªºThreshold
+static const bool IS_DEBUG = false;				//è¨­å®šæ˜¯å¦é¡¯ç¤ºDebugè¨Šæ¯
+static const int DIFFERENT_IMAGE_THRESHOLD = 5;	//å‰æ™¯çš„Threshold
+static const int BINARIZED_THRESHOLD = 20;		//äºŒç›´åŒ–çš„Threshold
 
 VideoCapture capture;
 Size frameSize;
@@ -29,24 +29,24 @@ Mat	backgroundImage;
 Mat iMatMax;
 Mat iMatMin;
 
-void Initial()
+void Initial()//åˆå§‹åŒ–
 {
 	capture = VideoCapture("FileName.mp4");
 
-	frameSize.height = (int) capture.get(CV_CAP_PROP_FRAME_HEIGHT);
-	frameSize.width = (int) capture.get(CV_CAP_PROP_FRAME_WIDTH);
+	frameSize.height = (int) capture.get(CV_CAP_PROP_FRAME_HEIGHT);//è·å–å¸§çš„é«˜åº¦
+	frameSize.width = (int) capture.get(CV_CAP_PROP_FRAME_WIDTH);//è·å–å¸§çš„å®½åº¦
 
-	frameNum = (int) capture.get(CV_CAP_PROP_FRAME_COUNT);
+	frameNum = (int) capture.get(CV_CAP_PROP_FRAME_COUNT);//è·å–æ€»å¸§æ•°
 	frameIndex = 0;
 }
 
-void InitialImageMaxMin(const Mat* grayFrame)
+void InitialImageMaxMin(const Mat* grayFrame)//åˆå§‹åŒ–å›¾åƒçš„æœ€å¤§æœ€å°å€¼
 {
-	grayFrame->copyTo(iMatMax);
+	grayFrame->copyTo(iMatMax);//grayFrameæ˜¯æŒ‡å‘å›¾åƒçš„æŒ‡é’ˆ
 	grayFrame->copyTo(iMatMin);
 }
 
-void UpdateImageMaxMin(Mat* grayFrame)
+void UpdateImageMaxMin(Mat* grayFrame)//æ›´æ–°å›¾åƒçš„æœ€å¤§æœ€å°å€¼
 {
 	int index = 0;
 
@@ -65,7 +65,7 @@ void UpdateImageMaxMin(Mat* grayFrame)
     }
 }
 
-void UpdateBackgroundImage()
+void UpdateBackgroundImage()//æ›´æ–°èƒŒæ™¯å›¾åƒ
 {
 	uchar diffImage;
 	uchar meanImage;
@@ -225,7 +225,7 @@ void HeadDetection(Mat thisForceEdgeImage, Mat thisFrame)
 	template_size = templateImage[0].cols;
 	//End
 
-	//¼ËªO¤j¤p 200*200
+	//æ¨£æ¿å¤§å° 200*200
 	for(int k=0;k<5;k++)
 	{
 		bool stop=0;
@@ -351,7 +351,7 @@ int main()
 
 		/* Code Start */
 
-		//°lÂÜ
+		//è¿½è¹¤
 		for(int i=0;i<data.size();i++)
 		{
 			int min = 2147483647;
@@ -381,11 +381,11 @@ int main()
 						}
 					}
 
-					//§ó·s®y¼Ğ
+					//æ›´æ–°åº§æ¨™
 					data[i].p.x = newPoint[j].p.x;
 					data[i].p.y = newPoint[j].p.y;
 
-					//°»´ú¦¸¼Æ
+					//åµæ¸¬æ¬¡æ•¸
 					data[i].detected_life++;
 
 					break;
@@ -393,11 +393,11 @@ int main()
 			}
 		}
 
-		//¸ê®Æ²M°£¶g´Á
+		//è³‡æ–™æ¸…é™¤é€±æœŸ
 		for(int i=0;i<data.size();i++)
 			data[i].life++;
 
-		//²M°£¹L´Á¸ê®Æ»P»~§P
+		//æ¸…é™¤éæœŸè³‡æ–™èˆ‡èª¤åˆ¤
 		while(1)
 		{
 			int size = 0;
@@ -411,7 +411,7 @@ int main()
 				break;
 		}
 
-		//§ó·s ·s°»´ú¨ìªºÂI
+		//æ›´æ–° æ–°åµæ¸¬åˆ°çš„é»
 		for(int i = 0; i < newPoint.size(); i++)
 		{
 			bool add = 1;
@@ -427,7 +427,7 @@ int main()
 				data.push_back(Detected_point(newPoint[i].p, newPoint[i].color));
 		}
 
-		//²M°£­«Å|»~§P
+		//æ¸…é™¤é‡ç–Šèª¤åˆ¤
 		for(int i = 0;i < data.size(); i++)
 		{
 			while(1)
@@ -450,7 +450,7 @@ int main()
 			}
 		}
 
-		//¼Ğ¥XÀY³¡
+		//æ¨™å‡ºé ­éƒ¨
 		for(int i = 0;i < data.size(); i++)
 		{
 			rectangle(thisFrame, Point(data[i].p.x - template_size, data[i].p.y - template_size),
@@ -462,15 +462,15 @@ int main()
 					  CV_RGB(255,255,255), 2);
 		}
 
-		//²M°£newPoint
+		//æ¸…é™¤newPoint
 		while(newPoint.size() > 0)
 			newPoint.erase(newPoint.begin());
 
-		//ÃC¦â
+		//é¡è‰²
 		CvScalar yellow = CV_RGB(255, 255, 0);
 		CvScalar red = CV_RGB(255, 0, 0);
 
-		//intÂàstring
+		//intè½‰string
 		string s1, s2;
 		stringstream ss1(s1);
 		ss1 << up;
@@ -482,7 +482,7 @@ int main()
 
 		CvFont font = cvFont(1, 1); //Scale, Thickness
 
-		//¦L¥X¤H¼Æ
+		//å°å‡ºäººæ•¸
 		/*
 		putText(thisFrame, "Up : ", Point(1000, 100), CV_FONT_HERSHEY_COMPLEX, 1, red);
 		putText(thisFrame, s1, Point(1200, 100), CV_FONT_HERSHEY_COMPLEX, 1, red);
